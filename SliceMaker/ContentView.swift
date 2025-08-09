@@ -9,13 +9,22 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        ZStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Text(makeAttributed())
+            .environment(\.openURL, OpenURLAction(handler: handleURL))
+    }
+    
+    func makeAttributed() -> AttributedString {
+        var text = AttributedString("Tap here to learn more.")
+        if let range = text.range(of: "here") {
+            text[range].link = URL(string: "")
+            text[range].foregroundColor = .blue
         }
-        .padding()
+        return text
+    }
+    
+    func handleURL(_ url: URL) -> OpenURLAction.Result {
+        print("Handle \(url) somehow")
+        return .handled
     }
 }
 
