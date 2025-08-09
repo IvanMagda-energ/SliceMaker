@@ -1,0 +1,242 @@
+# ================================================
+# SwiftLint Configuration
+# --------------------------------
+# This file defines linting rules, exclusions, and
+# custom checks for this project.
+#
+# Documentation:
+# https://realm.github.io/SwiftLint/
+# ================================================
+
+# --------------------------------
+# Rules to disable completely
+# --------------------------------
+disabled_rules:
+    # Ignore specific built-in rules
+    - discarded_notification_center_observer
+    - notification_center_detachment
+    - orphaned_doc_comment
+    - todo
+    - trailing_whitespace
+
+# --------------------------------
+# Opt-in rules (disabled by default in SwiftLint)
+# Enable only those that make sense for this project
+# --------------------------------
+opt_in_rules:
+    - array_init                               # Prefer Array(seq) over seq.map { $0 }
+    - attributes                               # Ensure attributes are consistently placed
+    - closure_end_indentation                  # Match closure end indentation to start
+    - closure_spacing                          # Single space inside closure braces
+    - collection_alignment                     # Align collection elements vertically
+    - colon                                    # No space before, one after colon in type/dict
+    - comma                                    # No space before, one after comma
+    - compiler_protocol_init                   # Don’t call compiler protocol initializers directly
+    - conditional_returns_on_newline           # Return on the next line for conditionals
+    - control_statement                        # No unnecessary parentheses around conditions
+    - convenience_type                         # Use caseless enum for static-only types
+    - cyclomatic_complexity                    # Limit function complexity
+    - empty_collection_literal                 # Prefer isEmpty over comparing to []
+    - empty_count                              # Prefer isEmpty over count == 0
+    - empty_string                             # Prefer isEmpty over comparing to ""
+    - enum_case_associated_values_count        # Limit associated values per enum case
+    - empty_enum_arguments                     # Add empty arguments to enum
+    - fatal_error_message                      # fatalError must have a message
+    - first_where                              # Prefer .first(where:) over filter{}.first
+    - force_unwrapping                         # Avoid force unwrapping (!)
+    - implicitly_unwrapped_optional            # Avoid IUOs where possible
+    - last_where                               # Prefer .last(where:) over filter{}.last
+    - legacy_random                            # Prefer type.random(in:) over legacy random()
+    - literal_expression_end_indentation       # Match literal end indentation to start
+    - multiline_arguments                      # Arguments either all on one line or one per line
+    - multiline_function_chains                # Chained calls on same or separate lines
+    - multiline_literal_brackets               # Surrounding brackets on their own lines
+    - multiline_parameters                     # Parameters either on one line or one per line
+    - operator_usage_whitespace                # Spaces around operators
+    - overridden_super_call                    # Calls to overridden methods should reference super correctly.
+    - pattern_matching_keywords                # Move keywords out of tuple bindings
+    - prefer_self_type_over_type_of_self       # Prefer Self over type(of: self)
+    - redundant_nil_coalescing                 # Avoid ?? nil
+    - redundant_type_annotation                # Avoid unnecessary type annotations
+    - redundant_discardable_let                # Avoid unnecessary `let _ = ...` when ignoring values.
+    - strict_fileprivate                       # Use fileprivate only when truly necessary.
+    - toggle_bool                              # Prefer toggle() over bool = !bool
+    - trailing_closure                         # Use trailing closure syntax where possible
+    - trailing_newline                         # Require a single newline at end of file
+    - unneeded_parentheses_in_closure_argument # Remove unneeded parentheses in closure args
+    - vertical_whitespace_closing_braces       # No empty line before closing brace
+    - vertical_whitespace_opening_braces       # No empty line after opening brace
+    - weak_delegate                            # Delegates should be weak (disabled here)
+    - missing_docs                             # Require documentation for public APIs
+
+# --------------------------------
+# File inclusion/exclusion
+# --------------------------------
+included: []   # Paths to include (empty means all unless excluded)
+excluded:
+    - Carthage
+    - Pods
+    - DerivedData
+    - .build
+    - .swiftpm
+
+# --------------------------------
+# Custom rules
+# --------------------------------
+custom_rules:
+    naming_singletons:
+        included: ".*\\.swift"
+        name: "Singleton naming"
+        regex: "static (var|let)[ ](instance|sharedInstance)[ ]*[:]"
+        message: "Use 'shared' instead of 'instance' or 'sharedInstance'"
+        severity: error
+    
+    no_print:
+        included: ".*\\.swift"
+        name: "Forbidden print"
+        regex: "print[(]"
+        message: "Use DevTools.Log instead of print()"
+        severity: warning
+    
+    no_hard_coded_time_zones:
+        included: ".*\\.swift"
+        name: "Forbidden hardcoded TimeZones"
+        regex: "\"UTC\"|\"GMT\""
+        message: "Use AppConstants.TimeZones instead of hardcoded strings"
+        severity: error
+    
+    no_letUnderscore:
+        included: ".*\\.swift"
+        name: "No let _ = ..."
+        regex: "let[ ][_][ ][=]"
+        message: "Avoid 'let _ = xxx', use 'xxx != nil' instead"
+        severity: warning
+    
+    numbers_smell:
+        regex: "(return |case |\\w\\(|: |\\?\\? |, |== |<=? |>=? |\\+= |\\-= |/= |\\*= |%= |\\w\\.\\w+ = )\\(*-?\\d{2,}"
+        message: "Magic number detected — define a constant instead"
+        severity: warning
+    
+    commented_code:
+        regex: "(?<!:|/)\\/\\/\\h*[a-z.](?!wiftlint)"
+        message: "Possible commented-out code — remove or document"
+        severity: warning
+        
+    use_preview_macro:
+        included: ".*\\.swift"
+        name: "Use #Preview macro"
+        regex: 'struct\s+\w+\s*:\s*PreviewProvider\s*\{'
+        message: "Use #Preview {} macro instead of struct conforming to PreviewProvider"
+        severity: warning
+
+# --------------------------------
+# Attribute placement rules
+# --------------------------------
+attributes:
+    always_on_same_line:
+    - "@IBSegueAction"
+    - "@IBAction"
+    - "@NSManaged"
+    - "@objc"
+    - "@State"
+    - "@ObservedObject"
+    - "@EnvironmentObject"
+    - "@StateObject"
+    - "@Published"
+    - "@Test"
+    always_on_line_above:
+    - "@discardableResult"
+    - "@MainActor"
+    - "@NSApplicationMain"
+
+# --------------------------------
+# Severity settings for specific rules
+# --------------------------------
+force_cast: warning
+force_try:
+    severity: error
+legacy_hashing: error
+
+large_tuple:
+    warning: 16
+    error: 18
+
+line_length:
+    warning: 150
+    error: 200
+    ignores_urls: true
+    ignores_function_declarations: false
+    ignores_comments: true
+    ignores_interpolated_strings: true
+
+multiline_arguments:
+    first_argument_location: next_line
+    only_enforce_after_first_closure_on_first_line: true
+
+private_over_fileprivate:
+    validate_extensions: true
+
+redundant_string_enum_value:
+    severity: error
+
+statement_position:
+    severity: error
+
+unused_closure_parameter:
+    severity: error
+
+return_arrow_whitespace:
+    severity: error
+
+vertical_whitespace:
+    max_empty_lines: 2
+
+type_body_length:
+    warning: 300
+    error: 400
+
+file_length:
+    warning: 450
+    error: 500
+
+function_body_length:
+    warning: 60
+    error: 70
+
+function_parameter_count:
+    warning: 8
+    error: 10
+
+nesting:
+    type_level:
+        warning: 2
+    function_level:
+        warning: 5
+
+identifier_name:
+    excluded:
+    - i
+    - id
+    - x
+    - y
+    - z
+    - ok
+    - or
+
+type_name:
+    min_length: 2
+    max_length: 50
+    excluded:
+    - ID
+    - iPhone
+
+# --------------------------------
+# Analyzer rules
+# --------------------------------
+analyzer_rules:
+    - unused_import
+
+# --------------------------------
+# Output format for lint results
+# --------------------------------
+reporter: "xcode"
