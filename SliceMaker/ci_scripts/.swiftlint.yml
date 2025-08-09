@@ -85,42 +85,49 @@ excluded:
 # --------------------------------
 custom_rules:
     naming_singletons:
-    included: ".*\\.swift"
-    name: "Singleton naming"
-    regex: "static (var|let)[ ](instance|sharedInstance)[ ]*[:]"
-    message: "Use 'shared' instead of 'instance' or 'sharedInstance'"
-    severity: error
+        included: ".*\\.swift"
+        name: "Singleton naming"
+        regex: "static (var|let)[ ](instance|sharedInstance)[ ]*[:]"
+        message: "Use 'shared' instead of 'instance' or 'sharedInstance'"
+        severity: error
     
     no_print:
-    included: ".*\\.swift"
-    name: "Forbidden print"
-    regex: "print[(]"
-    message: "Use DevTools.Log instead of print()"
-    severity: warning
+        included: ".*\\.swift"
+        name: "Forbidden print"
+        regex: "print[(]"
+        message: "Use DevTools.Log instead of print()"
+        severity: warning
     
     no_hard_coded_time_zones:
-    included: ".*\\.swift"
-    name: "Forbidden hardcoded TimeZones"
-    regex: "\"UTC\"|\"GMT\""
-    message: "Use AppConstants.TimeZones instead of hardcoded strings"
-    severity: error
+        included: ".*\\.swift"
+        name: "Forbidden hardcoded TimeZones"
+        regex: "\"UTC\"|\"GMT\""
+        message: "Use AppConstants.TimeZones instead of hardcoded strings"
+        severity: error
     
     no_letUnderscore:
-    included: ".*\\.swift"
-    name: "No let _ = ..."
-    regex: "let[ ][_][ ][=]"
-    message: "Avoid 'let _ = xxx', use 'xxx != nil' instead"
-    severity: warning
+        included: ".*\\.swift"
+        name: "No let _ = ..."
+        regex: "let[ ][_][ ][=]"
+        message: "Avoid 'let _ = xxx', use 'xxx != nil' instead"
+        severity: warning
     
     numbers_smell:
-    regex: "(return |case |\\w\\(|: |\\?\\? |, |== |<=? |>=? |\\+= |\\-= |/= |\\*= |%= |\\w\\.\\w+ = )\\(*-?\\d{2,}"
-    message: "Magic number detected — define a constant instead"
-    severity: warning
+        regex: "(return |case |\\w\\(|: |\\?\\? |, |== |<=? |>=? |\\+= |\\-= |/= |\\*= |%= |\\w\\.\\w+ = )\\(*-?\\d{2,}"
+        message: "Magic number detected — define a constant instead"
+        severity: warning
     
     commented_code:
-    regex: "(?<!:|/)\\/\\/\\h*[a-z.](?!wiftlint)"
-    message: "Possible commented-out code — remove or document"
-    severity: warning
+        regex: "(?<!:|/)\\/\\/\\h*[a-z.](?!wiftlint)"
+        message: "Possible commented-out code — remove or document"
+        severity: warning
+        
+    use_preview_macro:
+        included: ".*\\.swift"
+        name: "Use #Preview macro"
+        regex: 'struct\s+\w+\s*:\s*PreviewProvider\s*\{'
+        message: "Use #Preview {} macro instead of struct conforming to PreviewProvider"
+        severity: warning
 
 # --------------------------------
 # Attribute placement rules
@@ -202,9 +209,9 @@ function_parameter_count:
 
 nesting:
     type_level:
-    warning: 2
+        warning: 2
     function_level:
-    warning: 5
+        warning: 5
 
 identifier_name:
     excluded:
