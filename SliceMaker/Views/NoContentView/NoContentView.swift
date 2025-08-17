@@ -8,8 +8,12 @@
 
 import SwiftUI
 
-struct NoContentView: View {
-    let action: () -> Void
+struct NoContentView<T: View>: View {
+    let button: () -> T
+    
+    init(@ViewBuilder button: @escaping () -> T) {
+        self.button = button
+    }
     
     var body: some View {
         VStack {
@@ -18,19 +22,15 @@ struct NoContentView: View {
                 systemImage: "photo.on.rectangle.angled",
                 description: Text("Pick an image to start slicing.")
             )
-            Button {
-                action()
-            } label: {
-                Label("Select Image", systemImage: "plus")
-                    .font(.headline)
-            }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            button()
         }
         .padding()
     }
 }
 
 #Preview {
-    NoContentView {}
+    NoContentView {
+        Button("Pick Image") {}
+            .buttonStyle(.borderedProminent)
+    }
 }

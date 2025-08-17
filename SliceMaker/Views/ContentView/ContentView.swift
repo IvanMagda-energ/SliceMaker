@@ -6,60 +6,39 @@
 //
 
 import SwiftUI
-import PhotosUI
 
 struct ContentView: View {
-    @State private var viewModel = PhotosPickerViewModel()
-    @State private var isPhotosPickerPresented: Bool = false
-    @State private var isCameraPresented: Bool = false
-    @State private var selectedItem: PhotosPickerItem?
+    @State private var imageData: Data?
     
     var body: some View {
         NavigationStack {
             ZStack {
-                if let image = viewModel.image {
-                    imageView(image)
+                if let imageData, let image = Image(data: imageData) {
+                    image
+                        .resizable()
+                        .scaledToFit()
                 } else {
                     NoContentView {
-                        isPhotosPickerPresented.toggle()
+                        ImageSourceMenuView(imageData: $imageData) {
+                            Label("Select Image", systemImage: "plus")
+                                .foregroundStyle(Color.white)
+                        }
+                        .menuStyle(.capsuleButtonStyle)
                     }
                 }
             }
             .navigationTitle("SliceMaker")
             .toolbar {
                 ToolbarItem(placement: .automatic) {
-                    ImageSourceMenuView(
-                        isPhotosPickerPresented: $isPhotosPickerPresented,
-                        isCameraPresented: $isCameraPresented
-                    )
-                }
-            }
-            .photosPicker(
-                isPresented: $isPhotosPickerPresented,
-                selection: $selectedItem,
-                matching: .images
-            )
-            .onChange(of: selectedItem) {
-                if let selectedItem = selectedItem {
-                    Task {
-                        await viewModel.loadImage(from: selectedItem)
+                    ImageSourceMenuView(imageData: $imageData) {
+                        Image(systemName: "plus")
                     }
+                    .menuStyle(.button)
+                    .buttonStyle(.plain)
                 }
             }
-            .animation(.easeInOut, value: viewModel.image)
+            .animation(.easeInOut, value: imageData)
         }
-    }
-    
-    private func imageView(_ image: PlatformImage) -> some View {
-#if os(iOS)
-        Image(uiImage: image)
-            .resizable()
-            .scaledToFit()
-#elseif os(macOS)
-        Image(nsImage: image)
-            .resizable()
-            .scaledToFit()
-#endif
     }
 }
 

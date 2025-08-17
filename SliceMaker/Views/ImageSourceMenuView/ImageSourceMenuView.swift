@@ -6,10 +6,17 @@
 //
 
 import SwiftUI
+import PhotosUI
 
-struct ImageSourceMenuView: View {
-    @Binding var isPhotosPickerPresented: Bool
-    @Binding var isCameraPresented: Bool
+struct ImageSourceMenuView<T: View>: View {
+    @State private var viewModel = PhotosPickerViewModel()
+    @State private var isPhotosPickerPresented: Bool = false
+    @State private var isCameraPresented: Bool = false
+    @State private var selectedItem: PhotosPickerItem?
+    
+    @Binding var imageData: Data?
+    
+    var label: () -> T
     
     var body: some View {
         Menu {
@@ -27,13 +34,25 @@ struct ImageSourceMenuView: View {
                     .labelStyle(.titleAndIcon)
             }
         } label: {
-            Image(systemName: "plus")
+            label()
+        }        
+        .photosPicker(
+            isPresented: $isPhotosPickerPresented,
+            selection: $selectedItem,
+            matching: .images
+        )
+        .onChange(of: selectedItem) {
+            if let selectedItem = selectedItem {
+                Task {
+                    imageData = await viewModel.loadImage(from: selectedItem)
+                }
+            }
         }
-        .menuIndicator(.hidden)
-        .menuStyle(.borderlessButton)
     }
 }
 
 #Preview {
-    ContentView()
+    ImageSourceMenuView(imageData: .constant(nil)) {
+        Label("", systemImage: "plus")
+    }
 }

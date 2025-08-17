@@ -11,14 +11,12 @@ import PhotosUI
 @Observable
 @MainActor
 final class PhotosPickerViewModel {
-    private(set) var image: PlatformImage?
-    
     var error: ViewModelLocalizedError?
     var hasError = false
     
     var isLoading: Bool = false
     
-    func loadImage(from item: PhotosPickerItem) async {
+    func loadImage(from item: PhotosPickerItem) async -> Data? {
         defer {
             isLoading = false
         }
@@ -29,19 +27,16 @@ final class PhotosPickerViewModel {
                 NSLog("Failed to load data from item.")
                 throw ViewModelLocalizedError.failedToLoadImage
             }
-            
-            guard let image = PlatformImage(data: data) else {
-                NSLog("Failed to create PlatformImage from data.")
-                throw ViewModelLocalizedError.failedToLoadImage
-            }
-            self.image = image
+            return data
         } catch let error as ViewModelLocalizedError {
             self.error = error
             self.hasError = true
+            return nil
         } catch {
             NSLog("Unexpected error: \(error)")
             self.error = .failedToLoadImage
             self.hasError = true
+            return nil
         }
     }
 }
