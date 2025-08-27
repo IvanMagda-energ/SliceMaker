@@ -20,7 +20,7 @@ struct ContentView: View {
                 } else {
                     NoContentView {
                         ImageSourceMenuView(imageData: $imageData) {
-                            Label("Select Image", systemImage: "plus")
+                            Label("select.image.button.label", systemImage: "plus")
                                 .foregroundStyle(Color.white)
                         }
                         .menuStyle(.capsuleButtonStyle)

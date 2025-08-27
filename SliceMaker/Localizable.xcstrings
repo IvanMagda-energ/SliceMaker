@@ -1,0 +1,72 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "No Image Selected" : {
+      "localizations" : {
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зображення не вибрано"
+          }
+        }
+      }
+    },
+    "Open Camera" : {
+      "localizations" : {
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відкрити камеру"
+          }
+        }
+      }
+    },
+    "Open Gallery" : {
+      "localizations" : {
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відкрити галерею"
+          }
+        }
+      }
+    },
+    "Pick an image to start slicing." : {
+      "localizations" : {
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виберіть зображення, щоб розпочати нарізання."
+          }
+        }
+      }
+    },
+    "select.image.button.label" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select image"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виберіть зображення"
+          }
+        }
+      }
+    },
+    "SliceMaker" : {
+      "localizations" : {
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SliceMaker"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
